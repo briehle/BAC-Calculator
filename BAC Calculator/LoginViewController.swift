@@ -37,7 +37,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate
     {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-
+        
         let imageData = NSData(contentsOfURL: NSBundle.mainBundle()
             .URLForResource("giphy", withExtension: "gif")!)
         

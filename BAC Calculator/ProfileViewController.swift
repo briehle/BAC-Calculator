@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ProfileViewController: UIViewController, UITextFieldDelegate
 {
@@ -28,6 +29,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate
     var drink: Drink?
     var user: User?
     var users = [User]()
+    var ref: FIRDatabaseReference!
 
     override func viewDidLoad()
     {
@@ -53,7 +55,17 @@ class ProfileViewController: UIViewController, UITextFieldDelegate
             userNameTextField.text = user.userName
             passwordTextField.text = user.password
             weightTextField.text = user.weight
-            genderSwitch.setOn(user.gender, animated: user.gender)
+            
+            if user.gender == "male"
+            {
+                genderSwitch.setOn(true, animated: true)
+            }
+            
+            else
+            {
+                genderSwitch.setOn(false, animated: false)
+            }
+            
             genderSwitchIsChanged(genderSwitch)
             signoutButton.enabled = true
             
@@ -73,6 +85,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate
         }
         
         self.navigationController!.toolbarHidden = false
+        
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange,
@@ -183,16 +196,16 @@ class ProfileViewController: UIViewController, UITextFieldDelegate
             let userName = userNameTextField.text ?? ""
             let password = passwordTextField.text ?? ""
             let weight = weightTextField.text ?? ""
-            let gender: Bool
+            let gender: String
             
             if genderSwitch.on
             {
-                gender = true
+                gender = "male"
             }
             
             else
             {
-                gender = false
+                gender = "female"
             }
             
             let potentialNewUser = User(userName: userName, password: password, gender: gender, weight: weight)
@@ -203,10 +216,16 @@ class ProfileViewController: UIViewController, UITextFieldDelegate
             //existing user didnt change name Nothing
             //existing user chnages name to another user in list error
             
+            ref = FIRDatabase.database().reference()
+            
             //new user
             if findExistingUser(potentialNewUser!) == -1
             {
                 users.append(potentialNewUser!)
+                self.ref.child("users").child(userName).setValue(["username": userName])
+                self.ref.child("users").child(userName).child("password").setValue(["password": password])
+                self.ref.child("users").child(userName).child("gender").setValue(["gender": gender])
+                self.ref.child("users").child(userName).child("weight").setValue(["weight": weight])
             }
             
             else if user?.userName == potentialNewUser?.userName

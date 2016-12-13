@@ -190,7 +190,7 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate
         var genderConstant: Float
         
         //if male user
-        if user.gender
+        if user.gender == "male"
         {
             genderConstant = 0.68
         }

@@ -13,7 +13,7 @@ class User: NSObject, NSCoding
     // MARK: Properties
     var userName: String
     var password: String
-    var gender: Bool
+    var gender: String
     var weight: String
     var currentBac: Float
     var alcoholConsumedInGrams: Float
@@ -44,7 +44,7 @@ class User: NSObject, NSCoding
     }
     
     // MARK: Initialization
-    init?(userName: String, password: String, gender: Bool, weight: String)
+    init?(userName: String, password: String, gender: String, weight: String)
     {
         self.userName = userName
         self.password = password
@@ -65,7 +65,7 @@ class User: NSObject, NSCoding
         }
     }
     
-    init(userName: String, password: String, gender: Bool, weight: String, currentBac: Float, drinkNumber: Int, alcoholConsumedInGrams: Float, beginTime: Int64, endTime: Int64, isCurrentlyDrinking: Bool)
+    init(userName: String, password: String, gender: String, weight: String, currentBac: Float, drinkNumber: Int, alcoholConsumedInGrams: Float, beginTime: Int64, endTime: Int64, isCurrentlyDrinking: Bool)
     {
         self.userName = userName
         self.password = password
@@ -85,7 +85,7 @@ class User: NSObject, NSCoding
     {
         aCoder.encodeObject(userName, forKey: PropertyKey.nameKey)
         aCoder.encodeObject(password, forKey: PropertyKey.passwordKey)
-        aCoder.encodeBool(gender, forKey: PropertyKey.genderKey)
+        aCoder.encodeObject(gender, forKey: PropertyKey.genderKey)
         aCoder.encodeObject(weight, forKey: PropertyKey.weightKey)
         aCoder.encodeInteger(drinkNumber, forKey: PropertyKey.drinkNumberKey)
         aCoder.encodeFloat(currentBac, forKey: PropertyKey.currentBacKey)
@@ -100,7 +100,7 @@ class User: NSObject, NSCoding
         //unarchives the stored information stored about an object
         let userName = aDecoder.decodeObjectForKey(PropertyKey.nameKey) as! String
         let password = aDecoder.decodeObjectForKey(PropertyKey.passwordKey) as! String
-        let gender = aDecoder.decodeBoolForKey(PropertyKey.genderKey) as Bool
+        let gender = aDecoder.decodeObjectForKey(PropertyKey.genderKey) as! String
         let weight = aDecoder.decodeObjectForKey(PropertyKey.weightKey) as! String
         let drinkNumber = aDecoder.decodeIntegerForKey(PropertyKey.drinkNumberKey) as Int
         let currentBac = aDecoder.decodeFloatForKey(PropertyKey.currentBacKey) as Float
